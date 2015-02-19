@@ -1,23 +1,20 @@
 CLASSPATH = acm.jar
-CFLAGS = -cp $(CLASSPATH)
+CFLAGS = -cp .:$(CLASSPATH)
 
-JAVA_FILES = Tanks.java
+JAVA_FILES = Tanks.java Bullet.java
 CLASS_FILES = $(JAVA_FILES:.java=.class)
 
+all: Tanks
 
-all: breakout
-
-breakout: Tanks.class
+Tanks: $(CLASS_FILES)
 
 %.class: %.java
 	javac $(CFLAGS) $<
 
-
-submit: pset3.zip
-
-pset3.zip: $(JAVA_FILES)
-	zip $@ $^
-
-
 clean:
 	rm -f *.class
+
+submit: pset4.zip
+
+pset4.zip: $(JAVA_FILES)
+	zip $@ $^

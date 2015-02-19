@@ -36,6 +36,9 @@ public class Tanks extends GraphicsProgram
 	GPolygon tank1;
 	GPoint[] tankCoordinates = new GPoint[4];
 	double currentRotation = 0;
+	
+	// bullets arraylist
+	ArrayList<GOval> bullets = new ArrayList<GOval>();
 
 	/** Runs the Breakout program. */
 	public void run()
@@ -51,6 +54,12 @@ public class Tanks extends GraphicsProgram
 	}
 	
 	private void playGameLoop()
+	{
+		tankMovement();
+		bulletMovement();
+	}
+	
+	private void tankMovement()
 	{
 		int size = keyspressed.size(); 
 		for(int i=0; i<size; i++)
@@ -75,7 +84,16 @@ public class Tanks extends GraphicsProgram
 			{
 				shootBullet();
 			}
-		}	
+		}		
+	}
+	
+	private void bulletMovement()
+	{
+//		int noOfBullets = bullets.size();
+//		for(int i=0; i<size; i++)
+//		{
+//			
+//		}
 	}
 	
 	private void addTankToCenter()
@@ -157,8 +175,8 @@ public class Tanks extends GraphicsProgram
 	
 	private void shootBullet()
 	{
-		GOval bullet = new GOval(tank1.getX(), tank1.getY(),BULLETDIAMETER, BULLETDIAMETER);
-		add(bullet); 
+		//Bullet newBullet = new Bullet();
+
 	}
 }
 
