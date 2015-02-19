@@ -28,41 +28,6 @@ public class Tanks extends GraphicsProgram
 	private static final int TANKWIDTH = 20;
 	private static final int TANKHEIGHT = 40;
 
-	/** Dimensions of the paddle */
-	private static final int PADDLE_WIDTH = 60;
-	private static final int PADDLE_HEIGHT = 10;
-
-	/** Offset of the paddle up from the bottom */
-	private static final int PADDLE_Y_OFFSET = 30;
-
-	/** Number of bricks per row */
-	private static final int NBRICKS_PER_ROW = 10;
-
-	/** Number of rows of bricks */
-	private static final int NBRICK_ROWS = 10;
-
-	/** Separation between bricks */
-	private static final int BRICK_SEP = 4;
-
-	/** Width of a brick */
-	private static final int BRICK_WIDTH =
-		(WIDTH - (NBRICKS_PER_ROW - 1) * BRICK_SEP) / NBRICKS_PER_ROW;
-
-	/** Height of a brick */
-	private static final int BRICK_HEIGHT = 8;
-
-	/** Radius of the ball in pixels */
-	private static final int BALL_RADIUS = 10;
-
-	/** Offset of the top brick row from the top */
-	private static final int BRICK_Y_OFFSET = 70;
-
-	/** Number of turns */
-	private static final int NTURNS = 3;
-
-
-
-
 	private static final int TANKSPEED = 5;
 	private static final int BULLETDIAMETER = 3;
 	
@@ -147,21 +112,36 @@ public class Tanks extends GraphicsProgram
 	{
 		if(e.getKeyCode() == KeyEvent.VK_A)
 		{
-			keyspressed.clear();
+			removeCharFromKeysPressed('a');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_D)
 		{
-			keyspressed.clear();
+			removeCharFromKeysPressed('d');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_W)
 		{
-			keyspressed.clear();
+			removeCharFromKeysPressed('w');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_L)
 		{
-			keyspressed.clear();
+			removeCharFromKeysPressed('l');
 		}
 	}
+	
+	private void removeCharFromKeysPressed(char Char)
+	{
+		int size = keyspressed.size();
+		
+		for(int i=0; i<size; i++)
+		{
+			if(keyspressed.get(i) == Char)
+			{
+				keyspressed.remove(i);
+				// to fix outofboundsexception
+				size -= 1;
+			}
+		}
+	} 
 	
 	private void createGPointArray()
 	{
