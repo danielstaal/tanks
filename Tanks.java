@@ -1,7 +1,7 @@
 /*
  * File: Breakout.java
  * -------------------
- * Names: Sierk Kanis & Daniel Staal
+ * Name: Daniel Staal
  * 
  * This file will eventually implement the game of Tanks.
  */
@@ -29,7 +29,7 @@ public class Tanks extends GraphicsProgram
 	private static final int TANKHEIGHT = 40;
 
 	private static final int TANKSPEED = 5;
-	private static final int BULLETDIAMETER = 3;
+	public static final int BULLETDIAMETER = 3;
 	
 	ArrayList<Character> keyspressed = new ArrayList<Character>();
 	
@@ -38,9 +38,9 @@ public class Tanks extends GraphicsProgram
 	double currentRotation = 0;
 	
 	// bullets arraylist
-	ArrayList<GOval> bullets = new ArrayList<GOval>();
+	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-	/** Runs the Breakout program. */
+	/** Runs the Tanks program. */
 	public void run()
 	{
 		createGPointArray();
@@ -55,11 +55,11 @@ public class Tanks extends GraphicsProgram
 	
 	private void playGameLoop()
 	{
-		tankMovement();
+		tankActions();
 		bulletMovement();
 	}
 	
-	private void tankMovement()
+	private void tankActions()
 	{
 		int size = keyspressed.size(); 
 		for(int i=0; i<size; i++)
@@ -112,20 +112,21 @@ public class Tanks extends GraphicsProgram
 		{
 			keyspressed.add('a');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_D)
+		if(e.getKeyCode() == KeyEvent.VK_D && !keyspressed.contains('d'))
 		{
 			keyspressed.add('d');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_W)
+		if(e.getKeyCode() == KeyEvent.VK_W && !keyspressed.contains('w'))
 		{
 			keyspressed.add('w');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_L)
+		if(e.getKeyCode() == KeyEvent.VK_L && !keyspressed.contains('l'))
 		{
 			keyspressed.add('l');
 		}	
 	}
 	
+	// possibly to switch-statement
 	public void keyReleased(KeyEvent e)
 	{
 		if(e.getKeyCode() == KeyEvent.VK_A)
@@ -175,8 +176,8 @@ public class Tanks extends GraphicsProgram
 	
 	private void shootBullet()
 	{
-		//Bullet newBullet = new Bullet();
-
+		Bullet newBullet = new Bullet(tank1.getX(), tank1.getY());
+		add(newBullet.bullet);
 	}
 }
 
