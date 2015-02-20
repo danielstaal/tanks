@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Bullet extends Tanks
+public class Bullet extends Main
 {
 	private GOval bullet;
 	private double xSpeed;

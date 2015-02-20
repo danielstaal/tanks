@@ -1,5 +1,5 @@
 /*
- * File: Maze.java
+ * File: Tank.java
  * -------------------------
  */
 
@@ -11,11 +11,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Maze extends Main
+public class Tank extends Main
 {
-//	public void setupMaze()
-//	{
-//	}
 }
 
 
