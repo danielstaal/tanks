@@ -13,9 +13,10 @@ import java.util.*;
 
 public class Bullet extends Tanks
 {
-	GOval bullet;
+	private GOval bullet;
 	private double xSpeed;
-	private double ySpeed;	
+	private double ySpeed;
+	private int lifeSpan = 30;	
 	
 	public Bullet(double xCoor, double yCoor, double currentRotation)
 	{
@@ -26,13 +27,29 @@ public class Bullet extends Tanks
 		ySpeed = Math.sin(Math.toRadians(currentRotation)) * BULLETSPEED;
 	}
 	
+	public GOval getGOval()
+	{
+		return bullet;
+	}
+	
 	public double getBulletSpeedX()
 	{
 		return xSpeed;	
 	}
+	
 	public double getBulletSpeedY()
 	{
 		return ySpeed;	
+	}
+	
+	public int getLifeSpan()
+	{
+		return lifeSpan;
+	}
+	
+	public void lowerLifeSpan()
+	{
+		lifeSpan--;
 	}
 }
 

@@ -36,11 +36,13 @@ public class Tanks extends GraphicsProgram
 	ArrayList<Character> keyspressed = new ArrayList<Character>();
 	
 	GPolygon tank1;
-	GPoint[] tankCoordinates = new GPoint[4];
+	GPolygon tank2;
+	
+	GPoint[] tank1Coordinates = new GPoint[4];
 	double currentRotation = 0;
 	
 	// to make sure not keeping shooting bullets
-	int timer = 20;
+	int shootTimer = 20;
 	
 	// bullets arraylist
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -93,16 +95,16 @@ public class Tanks extends GraphicsProgram
 			}
 			else if(keyspressed.get(i) == 'l')
 			{
-				if(timer == 0)
+				if(shootTimer == 0)
 				{
 					shootBullet(currentRotation);
-					timer = 20;
+					shootTimer = 20;
 				}
 			}
 		}	
-		if(timer != 0)
+		if(shootTimer != 0)
 		{
-			timer--;
+			shootTimer--;
 		}	
 	}
 	
@@ -112,13 +114,22 @@ public class Tanks extends GraphicsProgram
 		for(int i=0; i<noOfBullets; i++)
 		{
 			Bullet temp = bullets.get(i);
-			temp.bullet.move(temp.getBulletSpeedX(), temp.getBulletSpeedY());
+			if(temp.getLifeSpan() > 0)
+			{
+				temp.getGOval().move(temp.getBulletSpeedX(), temp.getBulletSpeedY());
+			}else
+			{
+				remove(temp.getGOval());
+				bullets.remove(i);
+				noOfBullets--;
+			}
+			temp.lowerLifeSpan();
 		}
 	}
 	
 	private void addTankToCenter()
 	{
-		tank1 = new GPolygon(tankCoordinates);
+		tank1 = new GPolygon(tank1Coordinates);
 		tank1.setLocation(APPLICATION_WIDTH/2-TANKWIDTH,APPLICATION_HEIGHT/2-TANKHEIGHT);
 		add(tank1);
 		
@@ -196,16 +207,16 @@ public class Tanks extends GraphicsProgram
 		GPoint GPoint2 = new GPoint(0, TANKWIDTH);
 		GPoint GPoint3 = new GPoint(TANKHEIGHT, TANKWIDTH);
 		GPoint GPoint4 = new GPoint(TANKHEIGHT, 0);
-		tankCoordinates[0] = GPoint1;
-		tankCoordinates[1] = GPoint2;
-		tankCoordinates[2] = GPoint3;
-		tankCoordinates[3] = GPoint4;
+		tank1Coordinates[0] = GPoint1;
+		tank1Coordinates[1] = GPoint2;
+		tank1Coordinates[2] = GPoint3;
+		tank1Coordinates[3] = GPoint4;
 	}
 	
 	private void shootBullet(double currentRotation)
 	{
 		Bullet newBullet = new Bullet(tank1.getX(), tank1.getY(), currentRotation);
-		add(newBullet.bullet);
+		add(newBullet.getGOval());
 		bullets.add(newBullet);
 	}
 }
