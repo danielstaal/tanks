@@ -16,7 +16,7 @@ public class Bullet extends Tanks
 	private GOval bullet;
 	private double xSpeed;
 	private double ySpeed;
-	private int lifeSpan = 30;	
+	private int lifeSpan = 100;	
 	
 	public Bullet(double xCoor, double yCoor, double currentRotation)
 	{
@@ -50,6 +50,20 @@ public class Bullet extends Tanks
 	public void lowerLifeSpan()
 	{
 		lifeSpan--;
+	}
+	
+	public void checkForCollision()
+	{
+		double x = bullet.getX();
+		if((x < 0 && xSpeed < 0)|| (x > APPLICATION_WIDTH && xSpeed > 0))
+		{
+			xSpeed *= -1;
+		}
+		double y = bullet.getY();
+		if((y < 0 && ySpeed < 0)|| (y > APPLICATION_WIDTH && ySpeed > 0))
+		{
+			ySpeed *= -1;
+		}
 	}
 }
 

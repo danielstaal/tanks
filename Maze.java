@@ -13,9 +13,9 @@ import java.util.*;
 
 public class Maze extends Tanks
 {
-	public Maze()
-	{
-	}
+//	public void setupMaze()
+//	{
+//	}
 }
 
 

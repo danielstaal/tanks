@@ -26,30 +26,37 @@ public class Tanks extends GraphicsProgram
 
 	/** Tank width and height */
 	private static final int TANKWIDTH = 20;
-	private static final int TANKHEIGHT = 40;
+	private static final int TANKHEIGHT = 30;
 
+	/** Tank forward and backward speed */
 	private static final int TANKSPEED = 5;
 	private static final int TANKBACKSPEED = 2;
+	
+	/** Bullet diameter and speed */
 	public static final int BULLETDIAMETER = 3;
 	public static final int BULLETSPEED = 6;
 	
-	ArrayList<Character> keyspressed = new ArrayList<Character>();
+	// current keys pressed arraylist
+	ArrayList<Character> keysPressed = new ArrayList<Character>();
 	
 	GPolygon tank1;
 	GPolygon tank2;
 	
 	GPoint[] tank1Coordinates = new GPoint[4];
+	GPoint[] tank2Coordinates = new GPoint[4];
+	
 	double currentRotation = 0;
 	
-	// to make sure not keeping shooting bullets
+	// to make sure not to keep shooting bullets
 	int shootTimer = 20;
 	
-	// bullets arraylist
+	// current bullets arraylist
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
 	/** Runs the Tanks program. */
 	public void run()
 	{
+		//createMaze();
 		createGPointArray();
 		addTankToCenter();
 		addKeyListeners();
@@ -60,6 +67,12 @@ public class Tanks extends GraphicsProgram
 		}
 	}
 	
+	private void createMaze()
+	{
+//		Maze maze = new Maze();
+//		add(maze.setupMaze());
+	}
+	
 	private void playGameLoop()
 	{
 		tankActions();
@@ -68,32 +81,55 @@ public class Tanks extends GraphicsProgram
 	
 	private void tankActions()
 	{
-		int size = keyspressed.size(); 
+		int size = keysPressed.size(); 
 		for(int i=0; i<size; i++)
 		{
-			if(keyspressed.get(i) == 'a')			
+			if(keysPressed.get(i) == 'a')			
 			{
 				tank1.rotate(10);
 				currentRotation += 10;
 			}
-			else if(keyspressed.get(i) == 'd')
+			else if(keysPressed.get(i) == 'd')
 			{
 				tank1.rotate(-10);
 				currentRotation -= 10;
 			}
-			else if(keyspressed.get(i) == 'w')
+			else if(keysPressed.get(i) == 'w')
 			{
-				double x = Math.cos(Math.toRadians(currentRotation)) * TANKSPEED;
-				double y = Math.sin(Math.toRadians(currentRotation)) * TANKSPEED;
-				tank1.move(-x,y);
+				double xSpeed = -1 * Math.cos(Math.toRadians(currentRotation)) * TANKSPEED;
+				double ySpeed = Math.sin(Math.toRadians(currentRotation)) * TANKSPEED;
+				double x = tank1.getX();
+				double y = tank1.getY();
+				
+				// not tank out of screen (needs optimizing)
+				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+				{
+					xSpeed = 0;
+				} 
+				if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+				{
+					ySpeed = 0;
+				} 
+				tank1.move(xSpeed,ySpeed);
 			}
-			else if(keyspressed.get(i) == 's')
+			else if(keysPressed.get(i) == 's')
 			{
-				double x = Math.cos(Math.toRadians(currentRotation)) * TANKBACKSPEED;
-				double y = Math.sin(Math.toRadians(currentRotation)) * TANKBACKSPEED;
-				tank1.move(x,-y);
+				double xSpeed = Math.cos(Math.toRadians(currentRotation)) * TANKBACKSPEED;
+				double ySpeed = -1*Math.sin(Math.toRadians(currentRotation)) * TANKBACKSPEED;
+				double x = tank1.getX();
+				double y = tank1.getY();
+				// not tank out of screen (needs optimizing)
+				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+				{
+					xSpeed = 0;
+				} 
+				if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+				{
+					ySpeed = 0;
+				} 
+				tank1.move(xSpeed,ySpeed);
 			}
-			else if(keyspressed.get(i) == 'l')
+			else if(keysPressed.get(i) == 'l')
 			{
 				if(shootTimer == 0)
 				{
@@ -116,6 +152,9 @@ public class Tanks extends GraphicsProgram
 			Bullet temp = bullets.get(i);
 			if(temp.getLifeSpan() > 0)
 			{
+				// collision with wall
+				temp.checkForCollision();
+				// move bullet in right direction
 				temp.getGOval().move(temp.getBulletSpeedX(), temp.getBulletSpeedY());
 			}else
 			{
@@ -139,25 +178,25 @@ public class Tanks extends GraphicsProgram
 	
 	public void keyPressed(KeyEvent e)
 	{
-		if(e.getKeyCode() == KeyEvent.VK_A && !keyspressed.contains('a'))
+		if(e.getKeyCode() == KeyEvent.VK_A && !keysPressed.contains('a'))
 		{
-			keyspressed.add('a');
+			keysPressed.add('a');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_D && !keyspressed.contains('d'))
+		if(e.getKeyCode() == KeyEvent.VK_D && !keysPressed.contains('d'))
 		{
-			keyspressed.add('d');
+			keysPressed.add('d');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_W && !keyspressed.contains('w'))
+		if(e.getKeyCode() == KeyEvent.VK_W && !keysPressed.contains('w'))
 		{
-			keyspressed.add('w');
+			keysPressed.add('w');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_S && !keyspressed.contains('s'))
+		if(e.getKeyCode() == KeyEvent.VK_S && !keysPressed.contains('s'))
 		{
-			keyspressed.add('s');
+			keysPressed.add('s');
 		}
-		if(e.getKeyCode() == KeyEvent.VK_L && !keyspressed.contains('l'))
+		if(e.getKeyCode() == KeyEvent.VK_L && !keysPressed.contains('l'))
 		{
-			keyspressed.add('l');
+			keysPressed.add('l');
 		}	
 	}
 	
@@ -166,35 +205,35 @@ public class Tanks extends GraphicsProgram
 	{
 		if(e.getKeyCode() == KeyEvent.VK_A)
 		{
-			removeCharFromKeysPressed('a');
+			removeCharFromkeysPressed('a');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_D)
 		{
-			removeCharFromKeysPressed('d');
+			removeCharFromkeysPressed('d');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_W)
 		{
-			removeCharFromKeysPressed('w');
+			removeCharFromkeysPressed('w');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_S)
 		{
-			removeCharFromKeysPressed('s');
+			removeCharFromkeysPressed('s');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_L)
 		{
-			removeCharFromKeysPressed('l');
+			removeCharFromkeysPressed('l');
 		}
 	}
 	
-	private void removeCharFromKeysPressed(char Char)
+	private void removeCharFromkeysPressed(char Char)
 	{
-		int size = keyspressed.size();
+		int size = keysPressed.size();
 		
 		for(int i=0; i<size; i++)
 		{
-			if(keyspressed.get(i) == Char)
+			if(keysPressed.get(i) == Char)
 			{
-				keyspressed.remove(i);
+				keysPressed.remove(i);
 				// to fix outofboundsexception
 				size -= 1;
 			}
