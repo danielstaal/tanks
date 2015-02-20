@@ -29,6 +29,7 @@ public class Tanks extends GraphicsProgram
 	private static final int TANKHEIGHT = 40;
 
 	private static final int TANKSPEED = 5;
+	private static final int TANKBACKSPEED = 2;
 	public static final int BULLETDIAMETER = 3;
 	public static final int BULLETSPEED = 6;
 	
@@ -84,6 +85,12 @@ public class Tanks extends GraphicsProgram
 				double y = Math.sin(Math.toRadians(currentRotation)) * TANKSPEED;
 				tank1.move(-x,y);
 			}
+			else if(keyspressed.get(i) == 's')
+			{
+				double x = Math.cos(Math.toRadians(currentRotation)) * TANKBACKSPEED;
+				double y = Math.sin(Math.toRadians(currentRotation)) * TANKBACKSPEED;
+				tank1.move(x,-y);
+			}
 			else if(keyspressed.get(i) == 'l')
 			{
 				if(timer == 0)
@@ -133,6 +140,10 @@ public class Tanks extends GraphicsProgram
 		{
 			keyspressed.add('w');
 		}
+		if(e.getKeyCode() == KeyEvent.VK_S && !keyspressed.contains('s'))
+		{
+			keyspressed.add('s');
+		}
 		if(e.getKeyCode() == KeyEvent.VK_L && !keyspressed.contains('l'))
 		{
 			keyspressed.add('l');
@@ -153,6 +164,10 @@ public class Tanks extends GraphicsProgram
 		if(e.getKeyCode() == KeyEvent.VK_W)
 		{
 			removeCharFromKeysPressed('w');
+		}
+		if(e.getKeyCode() == KeyEvent.VK_S)
+		{
+			removeCharFromKeysPressed('s');
 		}
 		if(e.getKeyCode() == KeyEvent.VK_L)
 		{
