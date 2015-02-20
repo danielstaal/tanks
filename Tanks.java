@@ -30,12 +30,16 @@ public class Tanks extends GraphicsProgram
 
 	private static final int TANKSPEED = 5;
 	public static final int BULLETDIAMETER = 3;
+	public static final int BULLETSPEED = 6;
 	
 	ArrayList<Character> keyspressed = new ArrayList<Character>();
 	
 	GPolygon tank1;
 	GPoint[] tankCoordinates = new GPoint[4];
 	double currentRotation = 0;
+	
+	// to make sure not keeping shooting bullets
+	int timer = 20;
 	
 	// bullets arraylist
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -82,18 +86,27 @@ public class Tanks extends GraphicsProgram
 			}
 			else if(keyspressed.get(i) == 'l')
 			{
-				shootBullet();
+				if(timer == 0)
+				{
+					shootBullet(currentRotation);
+					timer = 20;
+				}
 			}
-		}		
+		}	
+		if(timer != 0)
+		{
+			timer--;
+		}	
 	}
 	
 	private void bulletMovement()
 	{
-//		int noOfBullets = bullets.size();
-//		for(int i=0; i<size; i++)
-//		{
-//			
-//		}
+		int noOfBullets = bullets.size();
+		for(int i=0; i<noOfBullets; i++)
+		{
+			Bullet temp = bullets.get(i);
+			temp.bullet.move(temp.getBulletSpeedX(), temp.getBulletSpeedY());
+		}
 	}
 	
 	private void addTankToCenter()
@@ -174,10 +187,11 @@ public class Tanks extends GraphicsProgram
 		tankCoordinates[3] = GPoint4;
 	}
 	
-	private void shootBullet()
+	private void shootBullet(double currentRotation)
 	{
-		Bullet newBullet = new Bullet(tank1.getX(), tank1.getY());
+		Bullet newBullet = new Bullet(tank1.getX(), tank1.getY(), currentRotation);
 		add(newBullet.bullet);
+		bullets.add(newBullet);
 	}
 }
 

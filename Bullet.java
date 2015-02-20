@@ -13,17 +13,36 @@ import java.util.*;
 
 public class Bullet extends Tanks
 {
-	double x;
-	double y;
 	GOval bullet;
-	double xSpeed = 4;
-	double ySpeed = 4;
-
-	public Bullet(double xCoor, double yCoor)
+	private double xSpeed;
+	private double ySpeed;	
+	
+	public Bullet(double xCoor, double yCoor, double currentRotation)
 	{
-		x = xCoor;
-		y = yCoor;
-		bullet = new GOval(x, y, BULLETDIAMETER, BULLETDIAMETER);
+		bullet = new GOval(xCoor, yCoor, BULLETDIAMETER, BULLETDIAMETER);
 		bullet.setFilled(true);
+		
+		xSpeed = -Math.cos(Math.toRadians(currentRotation)) * BULLETSPEED;
+		ySpeed = Math.sin(Math.toRadians(currentRotation)) * BULLETSPEED;
+	}
+	
+	public double getBulletSpeedX()
+	{
+		return xSpeed;	
+	}
+	public double getBulletSpeedY()
+	{
+		return ySpeed;	
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
