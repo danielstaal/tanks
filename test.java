@@ -25,12 +25,12 @@ public class Main extends GraphicsProgram
 	private static final int HEIGHT = APPLICATION_HEIGHT;
 
 	/** Tank width and height */
-	private static final int TANKWIDTH = 20;
-	private static final int TANKHEIGHT = 30;
+	public static final int TANKWIDTH = 20;
+	public static final int TANKHEIGHT = 30;
 
 	/** Tank forward and backward speed */
-	private static final int TANKSPEED = 5;
-	private static final int TANKBACKSPEED = 2;
+	public static final int TANKSPEED = 5;
+	public static final int TANKBACKSPEED = 2;
 	
 	/** Bullet diameter and speed */
 	public static final int BULLETDIAMETER = 3;
@@ -39,9 +39,16 @@ public class Main extends GraphicsProgram
 	// current keys pressed arraylist
 	ArrayList<Character> keysPressed = new ArrayList<Character>();
 	
-	Tank tank1 = new Tank();
-	Tank tank2 = new Tank();
-
+	GPolygon tank1;
+	GPolygon tank2;
+	
+	double currentRotationTank1 = 0;
+	double currentRotationTank2 = 0;
+	
+	// to make sure not to keep shooting bullets
+	int shootTimerTank1 = 20;
+	int shootTimerTank2 = 20;
+	
 	// current bullets arraylist
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
@@ -77,20 +84,20 @@ public class Main extends GraphicsProgram
 			// Tank 1
 			if(keysPressed.get(i) == 'a')			
 			{
-				tank1.getPolygon().rotate(10);
-				tank1.changeCurrentRotation(10);
+				tank1.rotate(10);
+				currentRotationTank1 += 10;
 			}
 			else if(keysPressed.get(i) == 'd')
 			{
-				tank1.getPolygon().rotate(-10);
-				tank1.changeCurrentRotation(-10);
+				tank1.rotate(-10);
+				currentRotationTank1 -= 10;
 			}
 			else if(keysPressed.get(i) == 'w')
 			{
-				double xSpeed = -1 * Math.cos(Math.toRadians(tank1.getCurrentRotation())) * TANKSPEED;
-				double ySpeed = Math.sin(Math.toRadians(tank1.getCurrentRotation())) * TANKSPEED;
-				double x = tank1.getPolygon().getX();
-				double y = tank1.getPolygon().getY();
+				double xSpeed = -1 * Math.cos(Math.toRadians(currentRotationTank1)) * TANKSPEED;
+				double ySpeed = Math.sin(Math.toRadians(currentRotationTank1)) * TANKSPEED;
+				double x = tank1.getX();
+				double y = tank1.getY();
 				
 				// not tank out of screen (needs optimizing)
 				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
@@ -101,14 +108,14 @@ public class Main extends GraphicsProgram
 				{
 					ySpeed = 0;
 				} 
-				tank1.getPolygon().move(xSpeed,ySpeed);
+				tank1.move(xSpeed,ySpeed);
 			}
 			else if(keysPressed.get(i) == 's')
 			{
-				double xSpeed = Math.cos(Math.toRadians(tank1.getCurrentRotation())) * TANKBACKSPEED;
-				double ySpeed = -1*Math.sin(Math.toRadians(tank1.getCurrentRotation())) * TANKBACKSPEED;
-				double x = tank1.getPolygon().getX();
-				double y = tank1.getPolygon().getY();
+				double xSpeed = Math.cos(Math.toRadians(currentRotationTank1)) * TANKBACKSPEED;
+				double ySpeed = -1*Math.sin(Math.toRadians(currentRotationTank1)) * TANKBACKSPEED;
+				double x = tank1.getX();
+				double y = tank1.getY();
 				// not tank out of screen (needs optimizing)
 				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
 				{
@@ -118,34 +125,34 @@ public class Main extends GraphicsProgram
 				{
 					ySpeed = 0;
 				} 
-				tank1.getPolygon().move(xSpeed,ySpeed);
+				tank1.move(xSpeed,ySpeed);
 			}
 			else if(keysPressed.get(i) == 'l')
 			{
-				if(tank1.getShootTimerTank() == 0)
+				if(shootTimerTank1 == 0)
 				{
-					shootBullet1(tank1.getCurrentRotation());
-					tank1.resetShootTimerTank();
+					shootBullet1(currentRotationTank1);
+					shootTimerTank1 = 20;
 				}
 			}
 			
 			// Tank 2
 			if(keysPressed.get(i) == 'L')			
 			{
-				tank2.getPolygon().rotate(10);
-				tank2.changeCurrentRotation(10);
+				tank2.rotate(10);
+				currentRotationTank2 += 10;
 			}
 			else if(keysPressed.get(i) == 'R')
 			{
-				tank2.getPolygon().rotate(-10);
-				tank2.changeCurrentRotation(-10);
+				tank2.rotate(-10);
+				currentRotationTank2 -= 10;
 			}
 			else if(keysPressed.get(i) == 'U')
 			{
-				double xSpeed = -1 * Math.cos(Math.toRadians(tank2.getCurrentRotation())) * TANKSPEED;
-				double ySpeed = Math.sin(Math.toRadians(tank2.getCurrentRotation())) * TANKSPEED;
-				double x = tank2.getPolygon().getX();
-				double y = tank2.getPolygon().getY();
+				double xSpeed = -1 * Math.cos(Math.toRadians(currentRotationTank2)) * TANKSPEED;
+				double ySpeed = Math.sin(Math.toRadians(currentRotationTank2)) * TANKSPEED;
+				double x = tank2.getX();
+				double y = tank2.getY();
 				
 				// not tank out of screen (needs optimizing)
 				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
@@ -156,14 +163,14 @@ public class Main extends GraphicsProgram
 				{
 					ySpeed = 0;
 				} 
-				tank2.getPolygon().move(xSpeed,ySpeed);
+				tank2.move(xSpeed,ySpeed);
 			}
 			else if(keysPressed.get(i) == 'D')
 			{
-				double xSpeed = Math.cos(Math.toRadians(tank2.getCurrentRotation())) * TANKBACKSPEED;
-				double ySpeed = -1*Math.sin(Math.toRadians(tank2.getCurrentRotation())) * TANKBACKSPEED;
-				double x = tank2.getPolygon().getX();
-				double y = tank2.getPolygon().getY();
+				double xSpeed = Math.cos(Math.toRadians(currentRotationTank2)) * TANKBACKSPEED;
+				double ySpeed = -1*Math.sin(Math.toRadians(currentRotationTank2)) * TANKBACKSPEED;
+				double x = tank2.getX();
+				double y = tank2.getY();
 				// not tank out of screen (needs optimizing)
 				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
 				{
@@ -173,24 +180,24 @@ public class Main extends GraphicsProgram
 				{
 					ySpeed = 0;
 				} 
-				tank2.getPolygon().move(xSpeed,ySpeed);
+				tank2.move(xSpeed,ySpeed);
 			}
 			else if(keysPressed.get(i) == 'S')
 			{
-				if(tank2.getShootTimerTank() == 0)
+				if(shootTimerTank2 == 0)
 				{
-					shootBullet2(tank2.getCurrentRotation());
-					tank2.resetShootTimerTank();
+					shootBullet2(currentRotationTank2);
+					shootTimerTank2 = 20;
 				}
 			}
 		}	
-		if(tank1.getShootTimerTank() != 0)
+		if(shootTimerTank1 != 0)
 		{
-			tank1.decreaseShootTimer();
+			shootTimerTank1--;
 		}	
-		if(tank2.getShootTimerTank() != 0)
+		if(shootTimerTank2 != 0)
 		{
-			tank2.getShootTimerTank();
+			shootTimerTank2--;
 		}	
 	}
 	
@@ -218,8 +225,21 @@ public class Main extends GraphicsProgram
 	
 	private void addTanksToScreen()
 	{
-		add(tank1.GPolygonAtCoordinates());
-		add(tank2.GPolygonAtCoordinates());
+		GPoint[] tankCoordinates = createGPointArray();
+		
+		tank1 = new GPolygon(tankCoordinates);
+		tank1.setLocation(APPLICATION_WIDTH/2-TANKWIDTH,APPLICATION_HEIGHT/2-TANKHEIGHT);
+		add(tank1);
+		
+		// for the right rotation 
+		tank1.recenter();
+		
+		tank2 = new GPolygon(tankCoordinates);
+		tank2.setLocation(APPLICATION_WIDTH/2-3*TANKWIDTH,APPLICATION_HEIGHT/2-3*TANKHEIGHT);
+		add(tank2);
+		
+		// for the right rotation 
+		tank2.recenter();
 	}
 	
 	public void keyPressed(KeyEvent e)
@@ -331,16 +351,30 @@ public class Main extends GraphicsProgram
 		}
 	} 
 	
-	private void shootBullet1(double currentRotationmaa)
+	private GPoint[] createGPointArray()
 	{
-		Bullet newBullet = new Bullet(tank1.getPolygon().getX(), tank1.getPolygon().getY(), currentRotation);
+		GPoint[] tankCoordinates = new GPoint[4];
+		GPoint GPoint1 = new GPoint();
+		GPoint GPoint2 = new GPoint(0, TANKWIDTH);
+		GPoint GPoint3 = new GPoint(TANKHEIGHT, TANKWIDTH);
+		GPoint GPoint4 = new GPoint(TANKHEIGHT, 0);
+		tankCoordinates[0] = GPoint1;
+		tankCoordinates[1] = GPoint2;
+		tankCoordinates[2] = GPoint3;
+		tankCoordinates[3] = GPoint4;
+		return tankCoordinates;
+	}
+	
+	private void shootBullet1(double currentRotation)
+	{
+		Bullet newBullet = new Bullet(tank1.getX(), tank1.getY(), currentRotation);
 		add(newBullet.getGOval());
 		bullets.add(newBullet);
 	}
 	
 	private void shootBullet2(double currentRotation)
 	{
-		Bullet newBullet = new Bullet(tank2.getPolygon().getX(), tank2.getPolygon().getY(), currentRotation);
+		Bullet newBullet = new Bullet(tank2.getX(), tank2.getY(), currentRotation);
 		add(newBullet.getGOval());
 		bullets.add(newBullet);
 	}
