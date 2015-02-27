@@ -379,7 +379,7 @@ public class Main extends GraphicsProgram
 		
 		GObject collider;
 		
-		int bla = 0;
+		boolean dodgeFinished = true;
 		
 		if(bulletPoints[0] != null)
 		{
@@ -391,12 +391,12 @@ public class Main extends GraphicsProgram
 				else if(collider.equals(tank2.getPolygon()))
 				{
 					dodge();
-					bla = 1;
+					dodgeFinished = false;
 					// stop searching
 					break;
 				}
 			}
-			if(bla == 0)
+			if(dodgeFinished == true)
 			{
 				tank2.resetDodging();
 				removeCharFromkeysPressed('L');
@@ -411,19 +411,30 @@ public class Main extends GraphicsProgram
 	{
 		if(tank2.getDodging() == 0)
 		{
-			keysPressed.add('L');
-			keysPressed.add('U');
+			int rand = randInt(0, 100);
+			int rand2 = randInt(0, 100);
+			
+			if(rand > 50)keysPressed.add('L');
+			else keysPressed.add('R');
+			
+			if(rand > 50)keysPressed.add('U');
+			else keysPressed.add('D');
 		}
 		tank2.increaseDodging();
 	}
 	
-	private void turn90degrees()
-	{
-	}	
-	
-	private void moveTillNoHit()
-	{
-	}
+	public static int randInt(int min, int max) {
+
+    // NOTE: Usually this should be a field rather than a method
+    // variable so that it is not re-seeded every call.
+    Random rand = new Random();
+
+    // nextInt is normally exclusive of the top value,
+    // so add 1 to make it inclusive
+    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+    return randomNum;
+}
 }
 
 
