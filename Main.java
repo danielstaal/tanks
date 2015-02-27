@@ -74,7 +74,10 @@ public class Main extends GraphicsProgram
 		int size = keysPressed.size(); 
 		for(int i=0; i<size; i++)
 		{
+			//to fix outofboundsexception
 			size = keysPressed.size();
+			
+			
 			// Tank 1
 			if(keysPressed.get(i) == 'a')			
 			{
@@ -376,6 +379,8 @@ public class Main extends GraphicsProgram
 		
 		GObject collider;
 		
+		int bla = 0;
+		
 		if(bulletPoints[0] != null)
 		{
 			for(int j=0; j<bulletPoints.length; j++)
@@ -385,18 +390,31 @@ public class Main extends GraphicsProgram
 				if(collider == null){}
 				else if(collider.equals(tank2.getPolygon()))
 				{
-					//dodge();
+					dodge();
+					bla = 1;
 					// stop searching
 					break;
 				}
+			}
+			if(bla == 0)
+			{
+				tank2.resetDodging();
+				removeCharFromkeysPressed('L');
+				removeCharFromkeysPressed('U');
+				removeCharFromkeysPressed('R');
+				removeCharFromkeysPressed('D');
 			}
 		}
 	}
 	
 	private void dodge()
 	{
-		turn90degrees();
-		moveTillNoHit();
+		if(tank2.getDodging() == 0)
+		{
+			keysPressed.add('L');
+			keysPressed.add('U');
+		}
+		tank2.increaseDodging();
 	}
 	
 	private void turn90degrees()

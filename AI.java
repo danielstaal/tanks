@@ -16,6 +16,7 @@ public class AI extends Tank
 	ArrayList<Character> AIkeys = new ArrayList<Character>();
 	
 	private int turnTimer = 10;
+	private int dodging = 0;
 	
 	public AI(int width, int height, int backSpeed, int speed)
 		{
@@ -66,6 +67,21 @@ public class AI extends Tank
 	{	
 		turnTimer = 20;
 	} 
+	
+	public int getDodging()
+	{
+		return dodging;
+	}
+	
+	public void increaseDodging()
+	{
+		dodging++;
+	}
+	
+	public void resetDodging()
+	{
+		dodging = 0;
+	}
 }
 
 
