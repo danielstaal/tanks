@@ -31,7 +31,8 @@ public class Main extends GraphicsProgram
 	/** Tank forward and backward speed */
 	private static final int TANKSPEED = 5;
 	private static final int TANKBACKSPEED = 2;
-	
+
+	// moet deelbaar door 180 zijn	
 	private static final int rotationSpeed = 5;
 
 	
@@ -405,6 +406,7 @@ public class Main extends GraphicsProgram
 				removeCharFromkeysPressed('U');
 				removeCharFromkeysPressed('R');
 				removeCharFromkeysPressed('D');
+				shoot();
 			}
 		}
 	}
@@ -424,6 +426,51 @@ public class Main extends GraphicsProgram
 			else keysPressed.add('D');
 		}
 		tank2.increaseDodging();
+	}
+	
+	private void shoot()
+	{
+		int rightAngle = tryAngles();
+		
+//		rotateToRightAngle();
+//		shootAtRightAngle();				
+	}
+	
+	private int tryAngles()
+	{	
+		GObject collider;
+		GPoint[] bulletPoints = new GPoint[100];
+		
+
+		
+		for(int i=0; i<360; i += rotationSpeed)
+		{
+			double xSpeed = -Math.cos(Math.toRadians(i)) * 5;
+			double ySpeed = Math.sin(Math.toRadians(i)) * 5;
+			
+			double x = tank2.getPolygon().getX();
+			double y = tank2.getPolygon().getY();
+			
+			for(int w=0; w<100; w++)
+				{
+					GPoint tempPoint = new GPoint(x,y);
+					bulletPoints[w] = tempPoint;
+					x += xSpeed;
+					y += ySpeed;
+				}
+				
+			for(int j=0; j<bulletPoints.length; j++)
+			{
+				collider = getElementAt(bulletPoints[j]);
+			
+				if(collider == null){}
+				else if(collider.equals(tank1.getPolygon()))
+				{
+					return i;
+				}
+			}
+		}
+		return 0;
 	}
 	
 	public static int randInt(int min, int max) {
