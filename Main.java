@@ -372,6 +372,8 @@ public class Main extends GraphicsProgram
 	
 	
 	////////////////////////////////////////////////////////////
+	//// AI Section	
+	////////////////////////////////////////////////////////////
 	
 	private void runAI()
 	{
@@ -407,6 +409,7 @@ public class Main extends GraphicsProgram
 		}
 	}
 	
+	// method to control dodging bullets
 	private void dodge()
 	{
 		if(tank2.getDodging() == 0)
@@ -434,7 +437,7 @@ public class Main extends GraphicsProgram
     int randomNum = rand.nextInt((max - min) + 1) + min;
 
     return randomNum;
-}
+	}
 }
 
 

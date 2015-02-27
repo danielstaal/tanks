@@ -35,19 +35,22 @@ public class AI extends Tank
 	{
 		GPoint[] bulletPoints = new GPoint[100];
 		if(bullets.size() > 0){ 
-			Bullet temp = bullets.get(0);
-			double x = temp.getGOval().getX();
-			double y = temp.getGOval().getY();
-		
-			double xSpeed = temp.getBulletSpeedX();
-			double ySpeed = temp.getBulletSpeedY();
-			
-			for(int i=0; i<100; i++)
+			for(int j=0; j<bullets.size(); j++)
 			{
-				GPoint tempPoint = new GPoint(x,y);
-				bulletPoints[i] = tempPoint;
-				x += xSpeed;
-				y += ySpeed;
+				Bullet temp = bullets.get(j);
+				double x = temp.getGOval().getX();
+				double y = temp.getGOval().getY();
+		
+				double xSpeed = temp.getBulletSpeedX();
+				double ySpeed = temp.getBulletSpeedY();
+			
+				for(int i=0; i<100; i++)
+				{
+					GPoint tempPoint = new GPoint(x,y);
+					bulletPoints[i] = tempPoint;
+					x += xSpeed;
+					y += ySpeed;
+				}
 			}
 		}
 		return bulletPoints;
