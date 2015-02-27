@@ -32,15 +32,14 @@ public class Main extends GraphicsProgram
 	private static final int TANKSPEED = 5;
 	private static final int TANKBACKSPEED = 2;
 	
-	/** Bullet diameter and speed */
-	public static final int BULLETDIAMETER = 3;
-	public static final int BULLETSPEED = 6;
+	private static final int rotationSpeed = 5;
+
 	
 	// current keys pressed arraylist
 	ArrayList<Character> keysPressed = new ArrayList<Character>();
 	
-	Tank tank1 = new Tank();
-	Tank tank2 = new Tank();
+	Tank tank1 = new Tank(WIDTH, HEIGHT, TANKSPEED, TANKBACKSPEED);
+	AI tank2 = new AI(WIDTH, HEIGHT, TANKSPEED, TANKBACKSPEED);
 
 	// current bullets arraylist
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -65,6 +64,7 @@ public class Main extends GraphicsProgram
 	
 	private void playGameLoop()
 	{
+		runAI();
 		tankActions();
 		bulletMovement();
 	}
@@ -74,16 +74,17 @@ public class Main extends GraphicsProgram
 		int size = keysPressed.size(); 
 		for(int i=0; i<size; i++)
 		{
+			size = keysPressed.size();
 			// Tank 1
 			if(keysPressed.get(i) == 'a')			
 			{
-				tank1.getPolygon().rotate(10);
-				tank1.changeCurrentRotation(10);
+				tank1.getPolygon().rotate(rotationSpeed);
+				tank1.changeCurrentRotation(rotationSpeed);
 			}
 			else if(keysPressed.get(i) == 'd')
 			{
-				tank1.getPolygon().rotate(-10);
-				tank1.changeCurrentRotation(-10);
+				tank1.getPolygon().rotate(-rotationSpeed);
+				tank1.changeCurrentRotation(-rotationSpeed);
 			}
 			else if(keysPressed.get(i) == 'w')
 			{
@@ -124,21 +125,27 @@ public class Main extends GraphicsProgram
 			{
 				if(tank1.getShootTimerTank() == 0)
 				{
-					shootBullet1(tank1.getCurrentRotation());
+					shootBullet1();
 					tank1.resetShootTimerTank();
 				}
 			}
 			
-			// Tank 2
+			
+			
+			
+			
+			// Tank 2 (AI)
+			
+			 
 			if(keysPressed.get(i) == 'L')			
 			{
-				tank2.getPolygon().rotate(10);
-				tank2.changeCurrentRotation(10);
+				tank2.getPolygon().rotate(rotationSpeed);
+				tank2.changeCurrentRotation(rotationSpeed);
 			}
 			else if(keysPressed.get(i) == 'R')
 			{
-				tank2.getPolygon().rotate(-10);
-				tank2.changeCurrentRotation(-10);
+				tank2.getPolygon().rotate(-rotationSpeed);
+				tank2.changeCurrentRotation(-rotationSpeed);
 			}
 			else if(keysPressed.get(i) == 'U')
 			{
@@ -179,7 +186,7 @@ public class Main extends GraphicsProgram
 			{
 				if(tank2.getShootTimerTank() == 0)
 				{
-					shootBullet2(tank2.getCurrentRotation());
+					shootBullet2();
 					tank2.resetShootTimerTank();
 				}
 			}
@@ -190,7 +197,7 @@ public class Main extends GraphicsProgram
 		}	
 		if(tank2.getShootTimerTank() != 0)
 		{
-			tank2.getShootTimerTank();
+			tank2.decreaseShootTimer();
 		}	
 	}
 	
@@ -204,6 +211,7 @@ public class Main extends GraphicsProgram
 			{
 				// collision with wall
 				temp.checkForCollision();
+				checkHitTank(temp);
 				// move bullet in right direction
 				temp.getGOval().move(temp.getBulletSpeedX(), temp.getBulletSpeedY());
 			}else
@@ -214,6 +222,20 @@ public class Main extends GraphicsProgram
 			}
 			temp.lowerLifeSpan();
 		}
+	}
+		
+	private void checkHitTank(Bullet temp)
+	{
+		GObject collider = getElementAt(temp.getGOval().getX(), temp.getGOval().getY());
+		if(collider == null){}
+		else if(collider.equals(tank1.getPolygon()))
+			{
+				//print("Player 2 won!");
+			}
+		else if(collider.equals(tank2.getPolygon()))
+			{
+				//print("Player 1 won!");
+			}
 	}
 	
 	private void addTanksToScreen()
@@ -331,18 +353,58 @@ public class Main extends GraphicsProgram
 		}
 	} 
 	
-	private void shootBullet1(double currentRotationmaa)
+	private void shootBullet1()
 	{
-		Bullet newBullet = new Bullet(tank1.getPolygon().getX(), tank1.getPolygon().getY(), currentRotation);
+		Bullet newBullet = new Bullet(tank1.getPolygon().getX(), tank1.getPolygon().getY(), tank1.getCurrentRotation(), WIDTH, HEIGHT, TANKWIDTH, TANKHEIGHT);
 		add(newBullet.getGOval());
 		bullets.add(newBullet);
 	}
 	
-	private void shootBullet2(double currentRotation)
+	private void shootBullet2()
 	{
-		Bullet newBullet = new Bullet(tank2.getPolygon().getX(), tank2.getPolygon().getY(), currentRotation);
+		Bullet newBullet = new Bullet(tank2.getPolygon().getX(), tank2.getPolygon().getY(), tank2.getCurrentRotation(), WIDTH, HEIGHT, TANKWIDTH, TANKHEIGHT);
 		add(newBullet.getGOval());
 		bullets.add(newBullet);
+	}
+	
+	
+	////////////////////////////////////////////////////////////
+	
+	private void runAI()
+	{
+		GPoint[] bulletPoints = tank2.dodgeBullet(bullets);
+		
+		GObject collider;
+		
+		if(bulletPoints[0] != null)
+		{
+			for(int j=0; j<bulletPoints.length; j++)
+			{
+				collider = getElementAt(bulletPoints[j]);
+			
+				if(collider == null){}
+				else if(collider.equals(tank2.getPolygon()))
+				{
+					//dodge();
+					// stop searching
+					break;
+				}
+			}
+		}
+	}
+	
+	private void dodge()
+	{
+		turn90degrees();
+		moveTillNoHit();
+	}
+	
+	private void turn90degrees()
+	{
+	}	
+	
+	private void moveTillNoHit()
+	{
 	}
 }
 

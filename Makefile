@@ -1,7 +1,7 @@
 CLASSPATH = acm.jar
 CFLAGS = -cp .:$(CLASSPATH)
 
-JAVA_FILES = Main.java Tank.java Bullet.java Maze.java
+JAVA_FILES = Main.java Tank.java Bullet.java Maze.java AI.java
 CLASS_FILES = $(JAVA_FILES:.java=.class)
 
 all: Tanks

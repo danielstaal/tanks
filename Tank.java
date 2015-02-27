@@ -11,33 +11,41 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Tank extends GraphicsProgram
+public class Tank extends GCanvas
 {
-	private GPolygon tankPolygon;
+	public GPolygon tankPolygon;
 	private int currentRotation;
 	private int shootTimerTank;
 	
-	private static final int APPLICATION_WIDTH = 600;
-	private static final int APPLICATION_HEIGHT = 600;
-		/** Tank width and height */
+	public int APPLICATION_WIDTH;
+	public int APPLICATION_HEIGHT;
+	
+	/** Tank width and height */
 	private static final int TANKWIDTH = 20;
 	private static final int TANKHEIGHT = 30;
 
 	/** Tank forward and backward speed */
-	private static final int TANKSPEED = 5;
-	private static final int TANKBACKSPEED = 2;
+	public int TANKSPEED;
+	public int TANKBACKSPEED;
 	
-	public Tank()
+	public Tank(int width, int height, int backSpeed, int speed)
 	{
 		currentRotation = 0;
 		shootTimerTank = 20;
+		APPLICATION_WIDTH = width;
+		APPLICATION_HEIGHT = height;
+		TANKSPEED = speed;
+		TANKBACKSPEED = backSpeed;
 	}
+	
+	// empty constructor for subclasses
+	public Tank(){}
 
 	public GPolygon GPolygonAtCoordinates()
 	{
 		GPoint[] tankCoordinates = createGPointArray();
 		
-		mtankPolygon = new GPolygon(tankCoordinates);
+		tankPolygon = new GPolygon(tankCoordinates);
 		tankPolygon.setLocation(APPLICATION_WIDTH/2-TANKWIDTH,APPLICATION_HEIGHT/2-TANKHEIGHT);
 		
 		// for the right rotation 
