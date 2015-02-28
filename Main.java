@@ -80,118 +80,122 @@ public class Main extends GraphicsProgram
 			
 			
 			// Tank 1
-			if(keysPressed.get(i) == 'a')			
+			if(i <= keysPressed.size())
 			{
-				tank1.getPolygon().rotate(rotationSpeed);
-				tank1.changeCurrentRotation(rotationSpeed);
-			}
-			else if(keysPressed.get(i) == 'd')
-			{
-				tank1.getPolygon().rotate(-rotationSpeed);
-				tank1.changeCurrentRotation(-rotationSpeed);
-			}
-			else if(keysPressed.get(i) == 'w')
-			{
-				double xSpeed = -1 * Math.cos(Math.toRadians(tank1.getCurrentRotation())) * TANKSPEED;
-				double ySpeed = Math.sin(Math.toRadians(tank1.getCurrentRotation())) * TANKSPEED;
-				double x = tank1.getPolygon().getX();
-				double y = tank1.getPolygon().getY();
+				if(keysPressed.get(i) == 'a')			
+				{
+					tank1.getPolygon().rotate(rotationSpeed);
+					tank1.changeCurrentRotation(rotationSpeed);
+				}
+				else if(keysPressed.get(i) == 'd')
+				{
+					tank1.getPolygon().rotate(-rotationSpeed);
+					tank1.changeCurrentRotation(-rotationSpeed);
+				}
+				else if(keysPressed.get(i) == 'w')
+				{
+					double xSpeed = -1 * Math.cos(Math.toRadians(tank1.getCurrentRotation())) * TANKSPEED;
+					double ySpeed = Math.sin(Math.toRadians(tank1.getCurrentRotation())) * TANKSPEED;
+					double x = tank1.getPolygon().getX();
+					double y = tank1.getPolygon().getY();
 				
-				// not tank out of screen (needs optimizing)
-				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+					// not tank out of screen (needs optimizing)
+					if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+					{
+						xSpeed = 0;
+					} 
+					if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+					{
+						ySpeed = 0;
+					} 
+					tank1.getPolygon().move(xSpeed,ySpeed);
+				}
+				else if(keysPressed.get(i) == 's')
 				{
-					xSpeed = 0;
-				} 
-				if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+					double xSpeed = Math.cos(Math.toRadians(tank1.getCurrentRotation())) * TANKBACKSPEED;
+					double ySpeed = -1*Math.sin(Math.toRadians(tank1.getCurrentRotation())) * TANKBACKSPEED;
+					double x = tank1.getPolygon().getX();
+					double y = tank1.getPolygon().getY();
+					// not tank out of screen (needs optimizing)
+					if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+					{
+						xSpeed = 0;
+					} 
+					if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+					{
+						ySpeed = 0;
+					} 
+					tank1.getPolygon().move(xSpeed,ySpeed);
+				}
+				else if(keysPressed.get(i) == 'l')
 				{
-					ySpeed = 0;
-				} 
-				tank1.getPolygon().move(xSpeed,ySpeed);
-			}
-			else if(keysPressed.get(i) == 's')
-			{
-				double xSpeed = Math.cos(Math.toRadians(tank1.getCurrentRotation())) * TANKBACKSPEED;
-				double ySpeed = -1*Math.sin(Math.toRadians(tank1.getCurrentRotation())) * TANKBACKSPEED;
-				double x = tank1.getPolygon().getX();
-				double y = tank1.getPolygon().getY();
-				// not tank out of screen (needs optimizing)
-				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
-				{
-					xSpeed = 0;
-				} 
-				if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
-				{
-					ySpeed = 0;
-				} 
-				tank1.getPolygon().move(xSpeed,ySpeed);
-			}
-			else if(keysPressed.get(i) == 'l')
-			{
-				if(tank1.getShootTimerTank() == 0)
-				{
-					shootBullet1();
-					tank1.resetShootTimerTank();
+					if(tank1.getShootTimerTank() == 0)
+					{
+						shootBullet1();
+						tank1.resetShootTimerTank();
+					}
 				}
 			}
 			
 			
 			
 			
-			
 			// Tank 2 (AI)
 			
-			 
-			if(keysPressed.get(i) == 'L')			
-			{
-				tank2.getPolygon().rotate(rotationSpeed);
-				tank2.changeCurrentRotation(rotationSpeed);
-			}
-			else if(keysPressed.get(i) == 'R')
-			{
-				tank2.getPolygon().rotate(-rotationSpeed);
-				tank2.changeCurrentRotation(-rotationSpeed);
-			}
-			else if(keysPressed.get(i) == 'U')
-			{
-				double xSpeed = -1 * Math.cos(Math.toRadians(tank2.getCurrentRotation())) * TANKSPEED;
-				double ySpeed = Math.sin(Math.toRadians(tank2.getCurrentRotation())) * TANKSPEED;
-				double x = tank2.getPolygon().getX();
-				double y = tank2.getPolygon().getY();
+			if(i <= keysPressed.size())
+			{ 
+				if(keysPressed.get(i) == 'L')			
+				{
+					tank2.getPolygon().rotate(rotationSpeed);
+					tank2.changeCurrentRotation(rotationSpeed);
+				}
+				else if(keysPressed.get(i) == 'R')
+				{
+					tank2.getPolygon().rotate(-rotationSpeed);
+					tank2.changeCurrentRotation(-rotationSpeed);
+				}
+				else if(keysPressed.get(i) == 'U')
+				{
+					double xSpeed = -1 * Math.cos(Math.toRadians(tank2.getCurrentRotation())) * TANKSPEED;
+					double ySpeed = Math.sin(Math.toRadians(tank2.getCurrentRotation())) * TANKSPEED;
+					double x = tank2.getPolygon().getX();
+					double y = tank2.getPolygon().getY();
 				
-				// not tank out of screen (needs optimizing)
-				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+					// not tank out of screen (needs optimizing)
+					if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+					{
+						xSpeed = 0;
+					} 
+					if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+					{
+						ySpeed = 0;
+					} 
+					tank2.getPolygon().move(xSpeed,ySpeed);
+				}
+				else if(keysPressed.get(i) == 'D')
 				{
-					xSpeed = 0;
-				} 
-				if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+					double xSpeed = Math.cos(Math.toRadians(tank2.getCurrentRotation())) * TANKBACKSPEED;
+					double ySpeed = -1*Math.sin(Math.toRadians(tank2.getCurrentRotation())) * TANKBACKSPEED;
+					double x = tank2.getPolygon().getX();
+					double y = tank2.getPolygon().getY();
+					// not tank out of screen (needs optimizing)
+					if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
+					{
+						xSpeed = 0;
+					} 
+					if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
+					{
+						ySpeed = 0;
+					} 
+					tank2.getPolygon().move(xSpeed,ySpeed);
+				}
+				else if(keysPressed.get(i) == 'S')
 				{
-					ySpeed = 0;
-				} 
-				tank2.getPolygon().move(xSpeed,ySpeed);
-			}
-			else if(keysPressed.get(i) == 'D')
-			{
-				double xSpeed = Math.cos(Math.toRadians(tank2.getCurrentRotation())) * TANKBACKSPEED;
-				double ySpeed = -1*Math.sin(Math.toRadians(tank2.getCurrentRotation())) * TANKBACKSPEED;
-				double x = tank2.getPolygon().getX();
-				double y = tank2.getPolygon().getY();
-				// not tank out of screen (needs optimizing)
-				if((x<=0 && xSpeed<0) || (x>=WIDTH && xSpeed>0))
-				{
-					xSpeed = 0;
-				} 
-				if((y<=0 && ySpeed<0) || (y>=HEIGHT && ySpeed>0))
-				{
-					ySpeed = 0;
-				} 
-				tank2.getPolygon().move(xSpeed,ySpeed);
-			}
-			else if(keysPressed.get(i) == 'S')
-			{
-				if(tank2.getShootTimerTank() == 0)
-				{
-					shootBullet2();
-					tank2.resetShootTimerTank();
+					if(tank2.getShootTimerTank() == 0)
+					{
+						shootBullet2();
+						tank2.resetShootTimerTank();
+					}
 				}
 			}
 		}	
@@ -389,7 +393,7 @@ public class Main extends GraphicsProgram
 			for(int j=0; j<bulletPoints.length; j++)
 			{
 				collider = getElementAt(bulletPoints[j]);
-			
+		
 				if(collider == null){}
 				else if(collider.equals(tank2.getPolygon()))
 				{
@@ -406,7 +410,6 @@ public class Main extends GraphicsProgram
 				removeCharFromkeysPressed('U');
 				removeCharFromkeysPressed('R');
 				removeCharFromkeysPressed('D');
-				shoot();
 			}
 		}
 	}
@@ -431,9 +434,8 @@ public class Main extends GraphicsProgram
 	private void shoot()
 	{
 		int rightAngle = tryAngles();
-		
-//		rotateToRightAngle();
-//		shootAtRightAngle();				
+//		rotateToRightAngle(rightAngle);
+		shootBullet2();				
 	}
 	
 	private int tryAngles()
@@ -471,6 +473,10 @@ public class Main extends GraphicsProgram
 			}
 		}
 		return 0;
+	}
+	
+	private void rotateToRightAngle(int rightAngle)
+	{
 	}
 	
 	public static int randInt(int min, int max) {

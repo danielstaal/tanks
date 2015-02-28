@@ -16,7 +16,7 @@ public class Bullet extends GraphicsProgram
 	private GOval bullet;
 	private double xSpeed;
 	private double ySpeed;
-	private int lifeSpan = 100;	
+	private int lifeSpan = 1000;	
 	
 	public int APPLICATION_WIDTH;
 	public int APPLICATION_HEIGHT;

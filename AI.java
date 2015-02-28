@@ -33,8 +33,11 @@ public class AI extends Tank
 	
 	public GPoint[] dodgeBullet(ArrayList<Bullet> bullets)
 	{
-		GPoint[] bulletPoints = new GPoint[100];
-		if(bullets.size() > 0){ 
+		
+		GPoint[] bulletPoints = new GPoint[1];
+	
+		if(bullets.size() > 0){
+			bulletPoints = new GPoint[bullets.size()*100]; 
 			for(int j=0; j<bullets.size(); j++)
 			{
 				Bullet temp = bullets.get(j);
@@ -47,7 +50,7 @@ public class AI extends Tank
 				for(int i=0; i<100; i++)
 				{
 					GPoint tempPoint = new GPoint(x,y);
-					bulletPoints[i] = tempPoint;
+					bulletPoints[j*100+i] = tempPoint;
 					x += xSpeed;
 					y += ySpeed;
 				}
