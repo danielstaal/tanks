@@ -75,12 +75,10 @@ public class Main extends GraphicsProgram
 		int size = keysPressed.size(); 
 		for(int i=0; i<size; i++)
 		{
-			//to fix outofboundsexception
-			size = keysPressed.size();
 			
 			
 			// Tank 1
-			if(i <= keysPressed.size())
+			if(i < keysPressed.size())
 			{
 				if(keysPressed.get(i) == 'a')			
 				{
@@ -142,8 +140,8 @@ public class Main extends GraphicsProgram
 			
 			// Tank 2 (AI)
 			
-			if(i <= keysPressed.size())
-			{ 
+			if(i < keysPressed.size())
+				{  
 				if(keysPressed.get(i) == 'L')			
 				{
 					tank2.getPolygon().rotate(rotationSpeed);
@@ -197,8 +195,8 @@ public class Main extends GraphicsProgram
 						tank2.resetShootTimerTank();
 					}
 				}
-			}
-		}	
+			}	
+		}
 		if(tank1.getShootTimerTank() != 0)
 		{
 			tank1.decreaseShootTimer();

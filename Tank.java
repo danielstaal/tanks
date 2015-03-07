@@ -31,7 +31,7 @@ public class Tank extends GCanvas
 	public Tank(int width, int height, int backSpeed, int speed)
 	{
 		currentRotation = 0;
-		shootTimerTank = 20;
+		shootTimerTank = 5;
 		APPLICATION_WIDTH = width;
 		APPLICATION_HEIGHT = height;
 		TANKSPEED = speed;
@@ -95,7 +95,7 @@ public class Tank extends GCanvas
 	
 	public void resetShootTimerTank()
 	{
-		shootTimerTank = 20;
+		shootTimerTank = 5;
 	}
 }
 
